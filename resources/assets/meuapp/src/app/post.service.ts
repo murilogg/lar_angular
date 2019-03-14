@@ -5,16 +5,7 @@ import { Post } from './post';
 @Injectable()
 export class PostService {
 
-  public posts: Post[] = [
-    new Post("joao", "Meu post", "Sub joao", "Joao@gmail.com", "minha mensagem"),
-    new Post("joao", "Meu post", "Sub joao", "Joao@gmail.com", "minha mensagem"),
-    new Post("joao", "Meu post", "Sub joao", "Joao@gmail.com", "minha mensagem"),
-    new Post("joao", "Meu post", "Sub joao", "Joao@gmail.com", "minha mensagem"),
-    new Post("joao", "Meu post", "Sub joao", "Joao@gmail.com", "minha mensagem"),
-    new Post("joao", "Meu post", "Sub joao", "Joao@gmail.com", "minha mensagem"),
-    new Post("joao", "Meu post", "Sub joao", "Joao@gmail.com", "minha mensagem"),
-    new Post("joao", "Meu post", "Sub joao", "Joao@gmail.com", "minha mensagem"),
-  ];
+  public posts: Post[] = [];
 
   constructor(private http: HttpClient) {
     this.http.get("/api/").subscribe(
@@ -56,5 +47,16 @@ export class PostService {
             console.log(event);
           }
         })
+  }
+
+  like(id: number){
+    this.http.get('/api/like/' + id)
+    .subscribe(
+      (event: any) => {
+        let p = this.posts.find((p) => p.id == id);
+        p.likes = event.likes;
+      }
+    );
+
   }
 }
